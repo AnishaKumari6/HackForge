@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* ============================================================
+   HACKFORGE DESIGN SYSTEM — SaaS / Event Management Redesign
+   A clean, minimal, and spacious layout using Indigo and Blue
+   accents with premium light backgrounds and soft shadows.
+   ============================================================ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: "Plus Jakarta Sans", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-ember-50: #eff6ff;
+  --color-ember-400: #60a5fa;
+  --color-ember-500: #2563eb;
+  --color-ember-600: #1d4ed8;
+  --color-ember-700: #1e40af;
+
+  --color-volt-50: #eff6ff;
+  --color-volt-100: #e0e7ff;
+  --color-volt-200: #c7d2fe;
+  --color-volt-300: #a5b4fc;
+  --color-volt-400: #6366f1;
+  --color-volt-500: #4f46e5;
+  --color-volt-600: #3730a3;
+  --color-volt-700: #4338ca;
+
+  --color-cyan-glow: #64748b;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  --animate-shimmer: shimmer 2.5s linear infinite;
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+:root {
+  --bg: #ffffff;
+  --bg-elevated: #f8fafc;
+  --surface: #ffffff;
+  --surface-glass: rgba(255, 255, 255, 0.95);
+  --ink: #111827;
+  --ink-muted: #4b5563;
+  --ink-light: #6b7280;
+  --border: #e5e7eb;
+  --border-glass: rgba(229, 231, 235, 0.8);
+}
+
+.dark {
+  --bg: #0b0f19;
+  --bg-elevated: #0f172a;
+  --surface: #0f172a;
+  --surface-glass: rgba(15, 23, 42, 0.95);
+  --ink: #f8fafc;
+  --ink-muted: #cbd5e1;
+  --ink-light: #64748b;
+  --border: #1e293b;
+  --border-glass: rgba(30, 41, 59, 0.8);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+/* Respect reduced-motion preference across all custom animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============ Reusable component-level utility classes ============ */
+
+.glass-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+.text-gradient-forge {
+  background: linear-gradient(135deg, var(--color-volt-500) 0%, var(--color-ember-500) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-gradient-forge {
+  background: linear-gradient(135deg, var(--color-volt-500) 0%, var(--color-ember-500) 100%);
+}
+
+.border-gradient-forge {
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, var(--ink-muted) 25%, var(--ink) 50%, var(--ink-muted) 75%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+/* Custom scrollbar tuned to the theme */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+/* Skeleton loading shimmer */
+.skeleton {
+  background: linear-gradient(90deg, var(--border) 25%, var(--bg-elevated) 37%, var(--border) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 0.75rem;
+}
