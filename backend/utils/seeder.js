@@ -294,7 +294,7 @@ const run = async () => {
       })
     )
   );
-  hackathon1.registeredCount += team1.members.length;
+  hackathon1.registeredCount += team1.members?.length;
   await hackathon1.save({ validateBeforeSave: false });
 
   // Team for hackathon2 (ongoing, with a submitted project + partial reviews)
@@ -321,7 +321,7 @@ const run = async () => {
       })
     )
   );
-  hackathon2.registeredCount += team2.members.length;
+  hackathon2.registeredCount += team2.members?.length;
   await hackathon2.save({ validateBeforeSave: false });
 
   const submission2 = await Submission.create({

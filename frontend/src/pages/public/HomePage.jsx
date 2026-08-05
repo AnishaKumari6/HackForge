@@ -35,7 +35,7 @@ const HackathonSection = ({ title, subtitle, hackathons, loading, viewAllTo }) =
 
     {loading ? (
       <CardGridSkeleton />
-    ) : hackathons.length === 0 ? (
+    ) : !hackathons || hackathons.length === 0 ? (
       <EmptyState title="Nothing here yet" description="Check back soon for new events." />
     ) : (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -61,9 +61,9 @@ const HomePage = () => {
           hackathonService.getTrending(),
           hackathonService.getPublicStats(),
         ]);
-        setFeatured(featuredRes.hackathons);
-        setTrending(trendingRes.hackathons);
-        setStats(statsRes.stats);
+        setFeatured(featuredRes?.hackathons || []);
+        setTrending(trendingRes?.hackathons || []);
+        setStats(statsRes?.stats || null);
       } catch (err) {
         // Public homepage should degrade gracefully even if the API is briefly unavailable
         console.error("Failed to load homepage data:", err);

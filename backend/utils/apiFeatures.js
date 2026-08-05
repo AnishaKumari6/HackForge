@@ -35,7 +35,7 @@ class APIFeatures {
   // or a case-insensitive regex fallback across multiple fields.
   search(fields = []) {
     const term = this.queryString.search || this.queryString.keyword;
-    if (term && fields.length) {
+    if (term && fields?.length) {
       const regex = new RegExp(term, "i");
       this.query = this.query.find({
         $or: fields.map((field) => ({ [field]: regex })),

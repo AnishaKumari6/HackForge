@@ -18,7 +18,8 @@ const AssignedProjectsPage = () => {
   useEffect(() => {
     hackathonService
       .getHackathons({ limit: 50 })
-      .then(({ hackathons }) => {
+      .then((res) => {
+        const hackathons = res?.hackathons || [];
         const assigned = hackathons.filter((h) => h.judges?.some((j) => (j._id || j) === user.id));
         setMyHackathons(assigned);
         if (assigned.length) setSelectedId(assigned[0]._id);
@@ -32,7 +33,7 @@ const AssignedProjectsPage = () => {
     setLoadingProjects(true);
     reviewService
       .getAssignedProjects(selectedId)
-      .then(({ projects: data }) => setProjects(data))
+      .then((res) => setProjects(res?.projects || []))
       .catch((err) => console.error("Failed to load projects:", err))
       .finally(() => setLoadingProjects(false));
   }, [selectedId]);
@@ -44,7 +45,7 @@ const AssignedProjectsPage = () => {
 
       {loadingHackathons ? (
         <Skeleton className="mt-6 h-12 w-64" />
-      ) : myHackathons.length === 0 ? (
+      ) : !myHackathons || myHackathons.length === 0 ? (
         <div className="mt-6">
           <EmptyState icon={<FiClipboard />} title="No assignments yet" description="You haven't been assigned to judge any hackathon." />
         </div>
@@ -65,7 +66,7 @@ const AssignedProjectsPage = () => {
                   <Skeleton key={i} className="h-20 w-full" />
                 ))}
               </div>
-            ) : projects.length === 0 ? (
+            ) : !projects || projects.length === 0 ? (
               <EmptyState title="No submitted projects yet" description="Check back once teams start submitting." />
             ) : (
               <div className="flex flex-col gap-3">

@@ -184,13 +184,13 @@ exports.leaveTeam = asyncHandler(async (req, res, next) => {
   if (!member) {
     return next(new ErrorResponse("You are not a member of this team.", 400));
   }
-  if (member.role === "leader" && team.members.length > 1) {
+  if (member.role === "leader" && team.members?.length > 1) {
     return next(new ErrorResponse("Transfer leadership before leaving the team.", 400));
   }
 
   team.members = team.members.filter((m) => m.user.toString() !== req.user._id.toString());
 
-  if (team.members.length === 0) {
+  if (team.members?.length === 0) {
     await team.deleteOne();
     return res.status(200).json({ success: true, message: "You left the team and it was disbanded." });
   }
@@ -258,7 +258,7 @@ exports.submitTeamForApproval = asyncHandler(async (req, res, next) => {
   if (!leader || leader.user.toString() !== req.user._id.toString()) {
     return next(new ErrorResponse("Only the team leader can submit the team.", 403));
   }
-  if (team.members.length < team.hackathon.minTeamSize) {
+  if (team.members?.length < team.hackathon.minTeamSize) {
     return next(new ErrorResponse(`Team needs at least ${team.hackathon.minTeamSize} member(s).`, 400));
   }
 
@@ -298,7 +298,7 @@ exports.getTeamsForHackathon = asyncHandler(async (req, res, next) => {
   if (req.query.status) filter.status = req.query.status;
 
   const teams = await Team.find(filter).populate("members.user", "name email avatar college");
-  res.status(200).json({ success: true, count: teams.length, teams });
+  res.status(200).json({ success: true, count: teams?.length, teams });
 });
 
 // @desc    Approve a team (auto-creates approved registrations for all members)
@@ -334,7 +334,7 @@ exports.approveTeam = asyncHandler(async (req, res, next) => {
     )
   );
 
-  team.hackathon.registeredCount += registrations.length;
+  team.hackathon.registeredCount += registrations?.length;
   await team.hackathon.save({ validateBeforeSave: false });
 
   await Promise.all(

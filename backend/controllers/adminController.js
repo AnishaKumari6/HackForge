@@ -104,7 +104,7 @@ exports.getActivityLogs = asyncHandler(async (req, res) => {
   const logs = await features.query;
   const meta = await features.getPaginationMeta(ActivityLog);
 
-  res.status(200).json({ success: true, count: logs.length, meta, logs });
+  res.status(200).json({ success: true, count: logs?.length, meta, logs });
 });
 
 // @desc    Generate a simple platform report (users, hackathons, registrations, submissions summary)

@@ -91,13 +91,13 @@ exports.uploadImages = asyncHandler(async (req, res, next) => {
   }
   await assertTeamMembership(submission.team, req.user._id);
 
-  if (!req.files || req.files.length === 0) {
+  if (!req.files || req.files?.length === 0) {
     return next(new ErrorResponse("Please upload at least one image.", 400));
   }
 
   const newImages = req.files.map((f) => ({ url: f.path, publicId: f.filename }));
   submission.images.push(...newImages);
-  if (submission.images.length > 6) {
+  if (submission.images?.length > 6) {
     return next(new ErrorResponse("A submission can have at most 6 images.", 400));
   }
   await submission.save({ validateBeforeSave: false });
@@ -222,7 +222,7 @@ exports.getSubmissionsForHackathon = asyncHandler(async (req, res, next) => {
   const submissions = await features.query;
   const meta = await features.getPaginationMeta(Submission, filter);
 
-  res.status(200).json({ success: true, count: submissions.length, meta, submissions });
+  res.status(200).json({ success: true, count: submissions?.length, meta, submissions });
 });
 
 // @desc    Public project gallery (across all completed/ongoing hackathons)
@@ -243,5 +243,5 @@ exports.getPublicGallery = asyncHandler(async (req, res) => {
   const submissions = await features.query;
   const meta = await features.getPaginationMeta(Submission, filter);
 
-  res.status(200).json({ success: true, count: submissions.length, meta, submissions });
+  res.status(200).json({ success: true, count: submissions?.length, meta, submissions });
 });

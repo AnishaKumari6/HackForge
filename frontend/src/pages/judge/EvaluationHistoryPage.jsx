@@ -11,7 +11,7 @@ const EvaluationHistoryPage = () => {
   useEffect(() => {
     reviewService
       .getHistory()
-      .then(({ reviews: data }) => setReviews(data))
+      .then((res) => setReviews(res?.reviews || []))
       .catch((err) => console.error("Failed to load history:", err))
       .finally(() => setLoading(false));
   }, []);
@@ -28,7 +28,7 @@ const EvaluationHistoryPage = () => {
               <Skeleton key={i} className="h-16 w-full" />
             ))}
           </div>
-        ) : reviews.length === 0 ? (
+        ) : !reviews || reviews.length === 0 ? (
           <EmptyState icon={<FiClock />} title="No evaluations yet" />
         ) : (
           <div className="flex flex-col gap-2.5">

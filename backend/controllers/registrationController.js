@@ -10,7 +10,7 @@ exports.getMyRegistrations = asyncHandler(async (req, res) => {
   const registrations = await Registration.find({ participant: req.user._id })
     .populate("hackathon", "title slug banner startDate endDate status")
     .populate("team", "name");
-  res.status(200).json({ success: true, count: registrations.length, registrations });
+  res.status(200).json({ success: true, count: registrations?.length, registrations });
 });
 
 // @desc    Get a single registration's QR code (generates on first request)
@@ -106,7 +106,7 @@ exports.getRegistrationsForHackathon = asyncHandler(async (req, res, next) => {
   const registrations = await features.query;
   const meta = await features.getPaginationMeta(Registration, { hackathon: req.params.hackathonId });
 
-  res.status(200).json({ success: true, count: registrations.length, meta, registrations });
+  res.status(200).json({ success: true, count: registrations?.length, meta, registrations });
 });
 
 // @desc    Export all registrations for a hackathon as CSV

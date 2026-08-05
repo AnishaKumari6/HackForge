@@ -25,9 +25,9 @@ const ManageUsersPage = () => {
     if (role) params.role = role;
     userService
       .getAllUsers(params)
-      .then(({ users: data, meta: m }) => {
-        setUsers(data);
-        setMeta(m);
+      .then((res) => {
+        setUsers(res?.users || []);
+        setMeta(res?.meta || null);
       })
       .catch((err) => console.error("Failed to load users:", err))
       .finally(() => setLoading(false));
@@ -95,7 +95,7 @@ const ManageUsersPage = () => {
               <Skeleton key={i} className="h-16 w-full" />
             ))}
           </div>
-        ) : users.length === 0 ? (
+        ) : !users || users.length === 0 ? (
           <EmptyState title="No users found" />
         ) : (
           <>
@@ -104,7 +104,7 @@ const ManageUsersPage = () => {
                 <Card key={u._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-forge text-xs font-bold text-white">
-                      {u.name[0]}
+                      {u.name?.[0] || ""}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">

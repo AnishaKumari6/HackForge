@@ -16,9 +16,9 @@ const MyHackathonsPage = () => {
     setLoading(true);
     hackathonService
       .getMyHackathons({ page, limit: 10 })
-      .then(({ hackathons: data, meta: m }) => {
-        setHackathons(data);
-        setMeta(m);
+      .then((res) => {
+        setHackathons(res?.hackathons || []);
+        setMeta(res?.meta || null);
       })
       .catch((err) => console.error("Failed to load hackathons:", err))
       .finally(() => setLoading(false));
@@ -40,7 +40,7 @@ const MyHackathonsPage = () => {
               <Skeleton key={i} className="h-20 w-full" />
             ))}
           </div>
-        ) : hackathons.length === 0 ? (
+        ) : !hackathons || hackathons.length === 0 ? (
           <EmptyState icon={<FiCalendar />} title="No hackathons yet" description="Create your first event to get started." />
         ) : (
           <>

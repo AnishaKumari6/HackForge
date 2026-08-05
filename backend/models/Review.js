@@ -31,7 +31,7 @@ reviewSchema.pre("save", function calculateTotal(next) {
   if (this.isModified("scores")) {
     const values = Object.values(this.scores.toObject ? this.scores.toObject() : this.scores);
     const sum = values.reduce((acc, v) => acc + (Number(v) || 0), 0);
-    this.totalScore = Number((sum / values.length).toFixed(2));
+    this.totalScore = Number((sum / values?.length).toFixed(2));
   }
   next();
 });

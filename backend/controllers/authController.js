@@ -70,7 +70,12 @@ exports.login = asyncHandler(async (req, res, next) => {
 // @route   POST /api/v1/auth/logout
 // @access  Private
 exports.logout = asyncHandler(async (req, res) => {
-  res.clearCookie("refreshToken", { path: "/api/v1/auth/refresh-token" });
+  res.clearCookie("refreshToken", {
+    path: "/api/v1/auth/refresh-token",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  });
   res.status(200).json({ success: true, message: "Logged out successfully." });
 });
 

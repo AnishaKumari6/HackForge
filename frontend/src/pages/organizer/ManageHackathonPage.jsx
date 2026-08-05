@@ -39,9 +39,9 @@ const ManageHackathonPage = () => {
       ]);
       const found = mineRes.hackathons.find((h) => h._id === id);
       setHackathon(found || null);
-      setTeams(teamsRes.teams);
-      setRegistrations(regRes.registrations);
-      setJudges(judgesRes.judges);
+      setTeams(teamsRes?.teams || []);
+      setRegistrations(regRes?.registrations || []);
+      setJudges(judgesRes?.judges || []);
       setSelectedJudgeIds(found?.judges?.map((j) => j._id || j) || []);
     } catch (err) {
       console.error("Failed to load hackathon management data:", err);
@@ -191,7 +191,7 @@ const ManageHackathonPage = () => {
 
       {activeTab === "Teams" && (
         <div className="mt-6 flex flex-col gap-3">
-          {teams.length === 0 ? (
+          {!teams || teams.length === 0 ? (
             <EmptyState title="No teams yet" description="Teams will appear here once participants start registering." />
           ) : (
             teams.map((team) => (
@@ -232,7 +232,7 @@ const ManageHackathonPage = () => {
               </Button>
             </a>
           </div>
-          {registrations.length === 0 ? (
+          {!registrations || registrations.length === 0 ? (
             <EmptyState title="No registrations yet" />
           ) : (
             <div className="overflow-x-auto rounded-2xl border border-[var(--border)]">

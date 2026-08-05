@@ -7,13 +7,13 @@ const recalcSubmissionScore = async (submissionId, io) => {
   const submission = await Submission.findById(submissionId).populate("hackathon", "judges");
   const reviews = await Review.find({ submission: submissionId });
 
-  const avg = reviews.length
-    ? Number((reviews.reduce((sum, r) => sum + r.totalScore, 0) / reviews.length).toFixed(2))
+  const avg = reviews?.length
+    ? Number((reviews.reduce((sum, r) => sum + r.totalScore, 0) / reviews?.length).toFixed(2))
     : 0;
 
   submission.averageScore = avg;
   submission.status =
-    reviews.length >= submission.hackathon.judges.length && submission.hackathon.judges.length > 0
+    reviews?.length >= submission.hackathon.judges?.length && submission.hackathon.judges?.length > 0
       ? "reviewed"
       : "under_review";
   await submission.save({ validateBeforeSave: false });
@@ -92,7 +92,7 @@ exports.getAssignedProjects = asyncHandler(async (req, res, next) => {
     reviewedByMe: reviewedIds.has(s._id.toString()),
   }));
 
-  res.status(200).json({ success: true, count: projects.length, projects });
+  res.status(200).json({ success: true, count: projects?.length, projects });
 });
 
 // @desc    Get the logged-in judge's evaluation history across all hackathons
@@ -103,7 +103,7 @@ exports.getReviewHistory = asyncHandler(async (req, res) => {
     .populate("submission", "projectName")
     .populate("hackathon", "title slug")
     .sort("-createdAt");
-  res.status(200).json({ success: true, count: reviews.length, reviews });
+  res.status(200).json({ success: true, count: reviews?.length, reviews });
 });
 
 // @desc    Get all reviews for a submission (organizer/admin oversight view)

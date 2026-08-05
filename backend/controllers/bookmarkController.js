@@ -34,5 +34,5 @@ exports.getMyBookmarks = asyncHandler(async (req, res) => {
     select: "title slug banner startDate endDate status prizePool mode",
   });
 
-  res.status(200).json({ success: true, count: bookmarks.length, bookmarks: bookmarks.map((b) => b.hackathon) });
+  res.status(200).json({ success: true, count: bookmarks?.length, bookmarks: bookmarks.map((b) => b.hackathon) });
 });

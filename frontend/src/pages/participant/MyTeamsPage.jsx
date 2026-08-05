@@ -14,10 +14,11 @@ const MyTeamsPage = () => {
   useEffect(() => {
     registrationService
       .getMyRegistrations()
-      .then(({ registrations }) => {
+      .then((res) => {
         // Registrations only exist for approved teams; dedupe by team id.
         const map = new Map();
-        registrations.forEach((r) => {
+        const regs = res?.registrations || [];
+        regs.forEach((r) => {
           if (r.team) map.set(r.team._id, { ...r.team, hackathon: r.hackathon });
         });
         setTeams(Array.from(map.values()));
@@ -42,7 +43,7 @@ const MyTeamsPage = () => {
               <Skeleton key={i} className="h-20 w-full" />
             ))}
           </div>
-        ) : teams.length === 0 ? (
+        ) : !teams || teams.length === 0 ? (
           <EmptyState
             icon={<FiUsers />}
             title="No teams yet"

@@ -7,7 +7,7 @@ const connectDB = async () => {
 
     // Bypasses local DNS resolver issues in environments where Node queries 127.0.0.1 by default
     const servers = dns.getServers();
-    if (servers.length === 1 && servers[0] === "127.0.0.1") {
+    if (servers?.length === 1 && servers[0] === "127.0.0.1") {
       console.log("[MongoDB] Local DNS resolver loopback detected. Falling back to public DNS resolvers (1.1.1.1, 8.8.8.8) for SRV lookup.");
       dns.setServers(["1.1.1.1", "8.8.8.8"]);
     }

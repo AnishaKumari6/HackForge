@@ -25,13 +25,13 @@ const OrganizerOverview = () => {
   useEffect(() => {
     hackathonService
       .getMyHackathons({ limit: 6 })
-      .then(({ hackathons: data }) => setHackathons(data))
+      .then((res) => setHackathons(res?.hackathons || []))
       .catch((err) => console.error("Failed to load hackathons:", err))
       .finally(() => setLoading(false));
   }, []);
 
-  const totalRegistrations = hackathons.reduce((sum, h) => sum + (h.registeredCount || 0), 0);
-  const liveCount = hackathons.filter((h) => ["published", "ongoing"].includes(h.status)).length;
+  const totalRegistrations = (hackathons || []).reduce((sum, h) => sum + (h.registeredCount || 0), 0);
+  const liveCount = (hackathons || []).filter((h) => ["published", "ongoing"].includes(h.status)).length;
 
   return (
     <div>
@@ -46,7 +46,7 @@ const OrganizerOverview = () => {
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard icon={FiCalendar} label="Total hackathons" value={hackathons.length} />
+        <StatCard icon={FiCalendar} label="Total hackathons" value={hackathons?.length ?? 0} />
         <StatCard icon={FiTrendingUp} label="Live or published" value={liveCount} />
         <StatCard icon={FiUsers} label="Total registrations" value={totalRegistrations} />
       </div>
@@ -65,7 +65,7 @@ const OrganizerOverview = () => {
               <Skeleton key={i} className="h-20 w-full" />
             ))}
           </div>
-        ) : hackathons.length === 0 ? (
+        ) : !hackathons || hackathons.length === 0 ? (
           <EmptyState
             icon={<FiCalendar />}
             title="No hackathons yet"

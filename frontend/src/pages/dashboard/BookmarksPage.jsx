@@ -11,7 +11,7 @@ const BookmarksPage = () => {
   useEffect(() => {
     bookmarkService
       .getMine()
-      .then(({ bookmarks }) => setHackathons(bookmarks.filter(Boolean)))
+      .then((res) => setHackathons((res?.bookmarks || []).filter(Boolean)))
       .catch((err) => console.error("Failed to load bookmarks:", err))
       .finally(() => setLoading(false));
   }, []);
@@ -28,7 +28,7 @@ const BookmarksPage = () => {
               <Skeleton key={i} className="h-80 w-full" />
             ))}
           </div>
-        ) : hackathons.length === 0 ? (
+        ) : !hackathons || hackathons.length === 0 ? (
           <EmptyState icon={<FiBookmark />} title="No bookmarks yet" description="Save hackathons you're interested in to find them here later." />
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

@@ -27,9 +27,9 @@ const HackathonsPage = () => {
       if (filters.mode) params.mode = filters.mode;
       if (filters.registrationOpen) params.registrationOpen = filters.registrationOpen;
 
-      const { hackathons: data, meta: metaData } = await hackathonService.getHackathons(params);
-      setHackathons(data);
-      setMeta(metaData);
+      const res = await hackathonService.getHackathons(params);
+      setHackathons(res?.hackathons || []);
+      setMeta(res?.meta || null);
     } catch (err) {
       console.error("Failed to load hackathons:", err);
     } finally {
@@ -118,7 +118,7 @@ const HackathonsPage = () => {
             <Skeleton key={i} className="h-80 w-full" />
           ))}
         </div>
-      ) : hackathons.length === 0 ? (
+      ) : !hackathons || hackathons.length === 0 ? (
         <EmptyState
           title="No hackathons found"
           description="Try adjusting your search or filters."

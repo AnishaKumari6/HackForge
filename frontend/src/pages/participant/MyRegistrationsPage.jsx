@@ -20,7 +20,7 @@ const MyRegistrationsPage = () => {
     setLoading(true);
     registrationService
       .getMyRegistrations()
-      .then(({ registrations: data }) => setRegistrations(data))
+      .then((res) => setRegistrations(res?.registrations || []))
       .catch((err) => console.error("Failed to load registrations:", err))
       .finally(() => setLoading(false));
   };
@@ -53,7 +53,7 @@ const MyRegistrationsPage = () => {
               <Skeleton key={i} className="h-24 w-full" />
             ))}
           </div>
-        ) : registrations.length === 0 ? (
+        ) : !registrations || registrations.length === 0 ? (
           <EmptyState
             icon={<FiCheckSquare />}
             title="No registrations yet"

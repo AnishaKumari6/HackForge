@@ -15,7 +15,7 @@ const GalleryPage = () => {
       setLoading(true);
       submissionService
         .getGallery({ search, limit: 24 })
-        .then(({ submissions: data }) => setSubmissions(data))
+        .then((res) => setSubmissions(res?.submissions || []))
         .catch((err) => console.error("Failed to load gallery:", err))
         .finally(() => setLoading(false));
     }, 300);
@@ -43,7 +43,7 @@ const GalleryPage = () => {
             <Skeleton key={i} className="h-56 w-full" />
           ))}
         </div>
-      ) : submissions.length === 0 ? (
+      ) : !submissions || submissions.length === 0 ? (
         <EmptyState title="No projects found" description="Try a different search term." />
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

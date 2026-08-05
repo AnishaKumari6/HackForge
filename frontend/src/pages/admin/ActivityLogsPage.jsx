@@ -15,9 +15,9 @@ const ActivityLogsPage = () => {
     setLoading(true);
     adminService
       .getActivityLogs({ page, limit: 20 })
-      .then(({ logs: data, meta: m }) => {
-        setLogs(data);
-        setMeta(m);
+      .then((res) => {
+        setLogs(res?.logs || []);
+        setMeta(res?.meta || null);
       })
       .catch((err) => console.error("Failed to load activity logs:", err))
       .finally(() => setLoading(false));
@@ -35,7 +35,7 @@ const ActivityLogsPage = () => {
               <Skeleton key={i} className="h-14 w-full" />
             ))}
           </div>
-        ) : logs.length === 0 ? (
+        ) : !logs || logs.length === 0 ? (
           <EmptyState icon={<FiActivity />} title="No activity logged yet" />
         ) : (
           <>

@@ -60,7 +60,7 @@ exports.listJudges = asyncHandler(async (req, res) => {
   const judges = await User.find({ role: "judge", isBlocked: false }).select(
     "name email avatar bio skills"
   );
-  res.status(200).json({ success: true, count: judges.length, judges });
+  res.status(200).json({ success: true, count: judges?.length, judges });
 });
 
 // ==========================
@@ -77,7 +77,7 @@ exports.getAllUsers = asyncHandler(async (req, res) => {
   const users = await features.query;
   const meta = await features.getPaginationMeta(User);
 
-  res.status(200).json({ success: true, count: users.length, meta, users });
+  res.status(200).json({ success: true, count: users?.length, meta, users });
 });
 
 // @desc    Block a user

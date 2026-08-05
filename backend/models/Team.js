@@ -46,7 +46,7 @@ teamSchema.methods.getLeader = function getLeader() {
 };
 
 teamSchema.methods.isFull = function isFull(maxTeamSize) {
-  return this.members.length >= maxTeamSize;
+  return this.members?.length >= maxTeamSize;
 };
 
 module.exports = mongoose.model("Team", teamSchema);

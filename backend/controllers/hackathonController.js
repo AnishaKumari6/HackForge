@@ -128,7 +128,7 @@ exports.getHackathons = asyncHandler(async (req, res) => {
   const hackathons = await features.query;
   const meta = await features.getPaginationMeta(Hackathon, { ...baseFilter, ...extra });
 
-  res.status(200).json({ success: true, count: hackathons.length, meta, hackathons });
+  res.status(200).json({ success: true, count: hackathons?.length, meta, hackathons });
 });
 
 // @desc    Get featured hackathons for homepage
@@ -197,7 +197,7 @@ exports.getMyHackathons = asyncHandler(async (req, res) => {
   const features = new APIFeatures(Hackathon.find({ organizer: req.user._id }), req.query).filter().sort().paginate();
   const hackathons = await features.query;
   const meta = await features.getPaginationMeta(Hackathon, { organizer: req.user._id });
-  res.status(200).json({ success: true, count: hackathons.length, meta, hackathons });
+  res.status(200).json({ success: true, count: hackathons?.length, meta, hackathons });
 });
 
 // @desc    Upload/replace hackathon banner

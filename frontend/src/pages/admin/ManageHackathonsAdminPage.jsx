@@ -20,9 +20,9 @@ const ManageHackathonsAdminPage = () => {
     setLoading(true);
     hackathonService
       .getHackathons({ page, limit: 12, sort: "-createdAt" })
-      .then(({ hackathons: data, meta: m }) => {
-        setHackathons(data);
-        setMeta(m);
+      .then((res) => {
+        setHackathons(res?.hackathons || []);
+        setMeta(res?.meta || null);
       })
       .catch((err) => console.error("Failed to load hackathons:", err))
       .finally(() => setLoading(false));
@@ -65,7 +65,7 @@ const ManageHackathonsAdminPage = () => {
               <Skeleton key={i} className="h-20 w-full" />
             ))}
           </div>
-        ) : hackathons.length === 0 ? (
+        ) : !hackathons || hackathons.length === 0 ? (
           <EmptyState title="No hackathons found" />
         ) : (
           <>

@@ -14,9 +14,10 @@ const MySubmissionsPage = () => {
   useEffect(() => {
     registrationService
       .getMyRegistrations()
-      .then(({ registrations }) => {
+      .then((res) => {
         const map = new Map();
-        registrations
+        const regs = res?.registrations || [];
+        regs
           .filter((r) => r.team && r.status === "approved")
           .forEach((r) => map.set(r.team._id, { ...r.team, hackathon: r.hackathon }));
         setTeams(Array.from(map.values()));
@@ -37,7 +38,7 @@ const MySubmissionsPage = () => {
               <Skeleton key={i} className="h-20 w-full" />
             ))}
           </div>
-        ) : teams.length === 0 ? (
+        ) : !teams || teams.length === 0 ? (
           <EmptyState
             icon={<FiFileText />}
             title="No approved teams yet"

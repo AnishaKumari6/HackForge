@@ -46,8 +46,8 @@ const HackathonDetailPage = () => {
           setMyTeam(team);
         }
 
-        const { leaderboard: lb } = await reviewService.getLeaderboard(h._id);
-        setLeaderboard(lb);
+        const lbRes = await reviewService.getLeaderboard(h._id);
+        setLeaderboard(lbRes?.leaderboard || []);
       } catch (err) {
         console.error("Failed to load hackathon:", err);
       } finally {
@@ -166,7 +166,7 @@ const HackathonDetailPage = () => {
                     <div key={i} className="flex gap-4">
                       <div className="flex flex-col items-center">
                         <div className="h-3 w-3 shrink-0 rounded-full bg-gradient-forge" />
-                        {i < hackathon.timeline.length - 1 && <div className="w-px flex-1 bg-[var(--border)]" />}
+                        {i < (hackathon.timeline?.length || 0) - 1 && <div className="w-px flex-1 bg-[var(--border)]" />}
                       </div>
                       <div className="pb-6">
                         <p className="text-xs text-[var(--ink-muted)]">{formatDate(event.date)}</p>
@@ -212,7 +212,7 @@ const HackathonDetailPage = () => {
 
             {activeTab === "Leaderboard" && (
               <div className="flex flex-col gap-2">
-                {leaderboard.length === 0 ? (
+                {!leaderboard || leaderboard.length === 0 ? (
                   <EmptyState title="No results yet" description="The leaderboard will populate once judging begins." />
                 ) : (
                   leaderboard.map((entry) => (
