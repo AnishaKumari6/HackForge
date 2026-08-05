@@ -49,7 +49,11 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
-// --- Health check ---
+// --- Health check & welcome ---
+app.get("/", (req, res) => {
+  res.status(200).json({ success: true, message: "Welcome to the HackForge API. Access resources via /api/v1." });
+});
+
 app.get("/api/v1/health", (req, res) => {
   res.status(200).json({ success: true, message: "HackForge API is running.", timestamp: new Date().toISOString() });
 });
